@@ -1,0 +1,682 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" style="scroll-behavior: smooth;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dean | Portfolio</title>
+    
+    <!-- My Css Files -->
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <link rel="stylesheet" href="{% static 'css/about.css' %}">
+    <link rel="stylesheet" href="{% static 'css/skills.css' %}">
+    <link rel="stylesheet" href="{% static 'css/projects.css' %}">
+    <link rel="stylesheet" href="{% static 'css/contact.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+
+    <!-- The Icon Library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+
+    <style>
+        section {
+            scroll-margin-top: 95px; /* Keeps navbar clearance */
+            scroll-padding-top: 95px; /* Ensures smooth landing padding */
+        }
+
+        /* [Your updated CSS style block from Step 2 goes directly here] */
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(30px); 
+            transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), 
+                        transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+        }
+        
+        .reveal-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        @keyframes structuralFloatUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .reveal-on-scroll .animate-entrance { opacity: 0; }
+        .reveal-on-scroll.is-visible .animate-entrance {
+            animation: structuralFloatUp 1.2s cubic-bezier(0.15, 0.85, 0.3, 1) forwards;
+        }
+        .reveal-on-scroll.is-visible .delay-1 { animation-delay: 0.12s; }
+        .reveal-on-scroll.is-visible .delay-2 { animation-delay: 0.24s; }
+        .reveal-on-scroll.is-visible .delay-3 { animation-delay: 0.36s; }
+        .reveal-on-scroll.is-visible .delay-4 { animation-delay: 0.48s; }
+        .reveal-on-scroll.is-visible .delay-5 { animation-delay: 0.60s; }
+        .reveal-on-scroll.is-visible .delay-6 { animation-delay: 0.72s; }
+
+        /* --- DYNAMIC FLASH MESSAGES TOAST ARCHITECTURE --- */
+        #toast-notification-container {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-width: 380px;
+            width: calc(100% - 60px);
+        }
+        .toast-card {
+            position: relative;
+            background: rgba(20, 21, 30, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 10px;
+            padding: 16px 50px 16px 20px;
+            color: #ffffff;
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 400;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            overflow: hidden;
+            animation: toastSlideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        .toast-success {
+            border: 1px solid rgba(46, 213, 115, 0.3);
+            box-shadow: 0 4px 20px rgba(46, 213, 115, 0.1), 0 10px 30px rgba(0, 0, 0, 0.35);
+        }
+        .toast-error {
+            border: 1px solid rgba(255, 71, 87, 0.3);
+            box-shadow: 0 4px 20px rgba(255, 71, 87, 0.1), 0 10px 30px rgba(0, 0, 0, 0.35);
+        }
+        .toast-content { display: flex; align-items: center; line-height: 1.4; }
+        .toast-close-btn {
+            position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+            background: none; border: none; color: rgba(255, 255, 255, 0.4);
+            font-size: 1.4rem; cursor: pointer; line-height: 1; padding: 4px;
+            transition: color 0.2s ease;
+        }
+        .toast-close-btn:hover { color: #ffffff; }
+        .toast-progress-bar {
+            position: absolute; bottom: 0; left: 0; height: 3px; width: 100%;
+            background: linear-gradient(90deg, #9d72ff, #e06fff);
+            animation: toastCountdown 3s linear forwards;
+        }
+        .toast-error .toast-progress-bar { background: linear-gradient(90deg, #ff4757, #ff6b81); }
+        @keyframes toastSlideIn { from { transform: translateX(120%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes toastCountdown { from { width: 100%; } to { width: 0%; } }
+        .toast-fade-out { transform: translateX(120%); opacity: 0; }
+    </style>
+</head>
+<body>
+
+    <!-- ==========================================
+     MINIMALIST GAME-STYLE NAME PRELOADER
+     =========================================== -->
+    <div id="game-preloader">
+        <div class="loader-content-center">
+            <h1 class="loader-name-title">IGBE DEAN</h1>
+            <div class="loader-progress-track">
+                <div id="loader-progress-fill"></div>
+            </div>
+            <div class="loader-percentage-row">
+                <span class="matrix-code">SYSTEM CORE v2.0.26</span>
+                <span id="loader-percentage-num">00%</span>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- =========================================================
+     NAVIGATION BAR LAYER
+     ========================================================= -->
+    <nav class="navbar">
+        <a href="#home" class="nav-logo">DEAN <span class="logo-highlight">PORTFOLIO</span></a>
+        
+        <div class="nav-container">
+            <ul class="nav-links">
+                <li><a href="#home" class="active">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#projects">Projects</a></li>
+            </ul>
+            <a href="#contact" class="nav-cta-btn">Contact Me</a>
+        </div>
+    </nav>
+
+    <main>
+
+        <!-- DJANGO FLASH MESSAGES TOAST CONTAINER -->
+        {% if messages %}
+            <div id="toast-notification-container">
+                {% for message in messages %}
+                    <div class="toast-card {% if message.tags %}toast-{{ message.tags }}{% endif %}">
+                        <div class="toast-content">
+                            <span class="toast-message-text">{{ message }}</span>
+                        </div>
+                        <button type="button" class="toast-close-btn" onclick="dismissToast(this)">&times;</button>
+                        <div class="toast-progress-bar"></div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <!-- =========================================================
+        HOME HERO SECTION
+        ========================================================= -->
+        <section id="home" class="home-section">
+            <!-- BACKGROUND LAYER PLACEHOLDER -->
+            <!-- Ambient glow spheres fade in immediately -->
+            <div class="home-bg-canvas animate-entrance">
+                <div class="glow-sphere ambient-left"></div>
+                <div class="glow-sphere ambient-right"></div>
+            </div>
+
+            <!-- MAIN LEFT-ALIGNED PORTFOLIO TEXT COMPONENT STACK -->
+            <div class="home-content-stack">
+                <span class="section-tagline animate-entrance delay-1">SOFTWARE ENGINEER</span>
+                
+                <h1 class="home-title animate-entrance delay-2">
+                    HI, I'M <span class="highlight">IGBE DEAN</span> –<br>
+                    <span id="typewriter"></span><span class="cursor">|</span>
+                </h1>
+                
+                <p class="home-subtitle animate-entrance delay-3">
+                    Crafting modern, responsive web experiences through elegant design, clean code, and robust backend engineering architectures.
+                </p>
+                
+                <div class="home-action-row animate-entrance delay-4">
+                    <a href="#projects" class="btn-neon-fill">Explore Work</a>
+                    
+                    <!-- CV Download Dropdown Container -->
+                    <div class="cv-dropdown-wrapper" id="cvDropdown">
+                        <button type="button" class="btn-neon-text cv-dropdown-toggle" id="cvToggleBtn">
+                            Download CV &nbsp;&darr;
+                        </button>
+                        
+                        <div class="cv-menu">
+                            <a href="{% static 'docs/Igbe_Dean_Python_Developer.pdf' %}" download class="cv-option">
+                                <i class="fa-solid fa-file-pdf"></i> Download PDF
+                            </a>
+                            <a href="{% static 'docs/Igbe_Dean_Python_Developer_CV.docx' %}" download class="cv-option">
+                                <i class="fa-solid fa-file-word"></i> Download Word (.docx)
+                            </a>
+                        </div>
+                    </div>
+                </div>  
+
+                <!-- LOWER LEFT COMPONENT: CORE STACK / STATUS WINDOW -->
+                <div class="floating-card bid-card animate-entrance delay-5">
+                    <span class="card-label">Current Main Stack Focus</span>
+                    <div class="bid-value-row">
+                        <div class="eth-icon">⚡</div>
+                        <div class="bid-numbers">
+                            <span class="current-bid">Backend Ecosystem</span>
+                            <span class="bid-amount">Python / Django / PostgreSQL</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT COMPONENT LAYER: ABSOLUTE FLOATING METRICS -->
+            <!-- The container and your image portrait glide up smoothly with the main title text -->
+            <div class="home-widgets-container animate-entrance delay-2">
+
+                <div class="hero-portrait-frame">
+                    <img src="{% static 'images/Dean4.png' %}" alt="Dean Portfolio Portrait" class="hero-portrait-img">
+                </div>
+
+                <!-- Pinned Floating Widgets cascade onto the screen at the very end -->
+                <!-- Pinned Capsule 1: UI Integration -->
+                <div class="capsule-widget ui-tag animate-entrance delay-4">
+                    <span class="pulse-dot"></span> Beautiful UI Integration
+                </div>
+                
+                <!-- Pinned Capsule 2: Security -->
+                <div class="capsule-widget authenticity-tag animate-entrance delay-4">
+                    <span class="pulse-dot"></span> Secure Auth Integration
+                </div>
+
+                <!-- Pinned Capsule 3: Scalable DB Logic -->
+                <div class="capsule-widget creators-tag animate-entrance delay-5">
+                    Scalable DB Design
+                </div>
+
+                <!-- Pinned Capsule 4: Clean Architecture -->
+                <div class="capsule-widget storage-tag animate-entrance delay-5">
+                    Clean Architecture
+                </div>
+
+                <!-- LOWER RIGHT COMPONENT: METRICS SYSTEM -->
+                <div class="countdown-clock-wrapper animate-entrance delay-6">
+                    <div class="time-block">
+                        <span class="time-number">03+</span>
+                        <span class="time-label">Projects</span>
+                    </div>
+                    <div class="time-block glow-block">
+                        <span class="time-number">100%</span>
+                        <span class="time-label">Custom Code</span>
+                    </div>
+                    <div class="time-block glow-block">
+                        <span class="time-number">B.Sc.</span>
+                        <span class="time-label">CompSci</span>
+                    </div>
+                    <div class="time-block">
+                        <span class="time-number">Git</span>
+                        <span class="time-label">Versioned</span>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- The About Section -->
+        <section id="about" class="about-section">
+            <!-- Keep your existing reveal wrapper as the orchestrator -->
+            <div class="about-container reveal-on-scroll">
+                
+                <!-- Left Column: Circular Avatar Visuals -->
+                <div class="about-visual-column animate-entrance delay-1">
+                    <div class="circular-avatar-wrapper">
+                        <img src="{% static 'images/Dean1.jpg' %}" alt="About Avatar" class="about-avatar-img">
+                        
+                        <div class="avatar-glow cyan-pulse"></div>
+                        <div class="avatar-glow purple-static"></div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Biography Content Stack -->
+                <div class="about-content-column">
+                    <h2 class="about-title animate-entrance delay-2">About <span class="highlight">Me</span></h2>
+                    
+                    <!-- Paragraph text slides up gently together -->
+                    <div class="about-text-stack animate-entrance delay-3">
+                        <p>I'm a Full-Stack Developer specializing in robust backend engineering and secure identity systems. With hands-on experience architectural design, I build clean, high-performance web applications powered by robust systems like Python, Django, and Flask, with seamless integration across PostgreSQL environments.</p>
+                        
+                        <p>I specialize in building secure authentication engines, designing custom identity models, and orchestrating efficient database migrations. From crafting robust server-side views to structuring modular, namespaced frontend components, I focus on building reliable software from the database up.</p>
+                        
+                        <p>My skill set bridges clean, structured backend workflows with highly organized, section-specific user interfaces. I am deeply passionate about shipping secure, scalable, and practical solutions—whether managing source control on GitHub or building responsive ecosystems tailored for modern web demands.</p>
+                    </div>
+
+                    <!-- Stats pills pop onto the screen last to anchor the section -->
+                    <div class="about-stats-group animate-entrance delay-4">
+                        <div class="stat-pill">3 Years Experience</div>
+                        <div class="stat-pill">3+ Projects Completed</div>
+                        <div class="stat-pill">100% Client Satisfaction</div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- The Skills Section -->
+        <section id="skills" class="skills-section">
+    
+            <h2 class="skills-heading reveal-on-scroll">My <span class="highlight">Skills</span></h2>
+            
+            <div class="skills-grid reveal-on-scroll">
+                
+                <div class="skill-card">
+                    <div class="skill-icon-wrapper">
+                        <i class="fa-brands fa-python skill-custom-icon" style="color: #3776AB;"></i>
+                    </div>
+                    <h3>Python</h3>
+                    <div class="progress-bar-container">
+                        <div class="progress-line" data-progress="85%"></div>
+                    </div>
+                    <span class="progress-percentage">85%</span>
+                </div>
+
+                <div class="skill-card">
+                    <div class="skill-icon-wrapper">
+                        <span class="django-text-icon">dj</span>
+                    </div>
+                    <h3>Django</h3>
+                    <div class="progress-bar-container">
+                        <div class="progress-line" data-progress="80%"></div>
+                    </div>
+                    <span class="progress-percentage">80%</span>
+                </div>
+
+                <div class="skill-card">
+                    <div class="skill-icon-wrapper">
+                        <i class="fa-solid fa-pepper-hot skill-custom-icon" style="color: #e06fff;"></i>
+                    </div>
+                    <h3>Flask</h3>
+                    <div class="progress-bar-container">
+                        <div class="progress-line" data-progress="85%"></div>
+                    </div>
+                    <span class="progress-percentage">85%</span>
+                </div>
+
+                <div class="skill-card">
+                    <div class="skill-icon-wrapper dual-icons">
+                        <i class="fa-brands fa-html5 skill-custom-icon html-icon"></i>
+                        <i class="fa-brands fa-css3-alt skill-custom-icon css-icon"></i>
+                    </div>
+                    <h3>HTML5 / CSS3</h3>
+                    <div class="progress-bar-container">
+                        <div class="progress-line" data-progress="95%"></div>
+                    </div>
+                    <span class="progress-percentage">95%</span>
+                </div>
+
+                <div class="skill-card">
+                    <div class="skill-icon-wrapper">
+                        <i class="fa-brands fa-js skill-custom-icon" style="color: #F7DF1E;"></i>
+                    </div>
+                    <h3>JavaScript</h3>
+                    <div class="progress-bar-container">
+                        <div class="progress-line" data-progress="70%"></div>
+                    </div>
+                    <span class="progress-percentage">70%</span>
+                </div>
+
+                <div class="skill-card">
+                    <div class="skill-icon-wrapper">
+                        <i class="fa-brands fa-bootstrap skill-custom-icon" style="color: #7952B3;"></i>
+                    </div>
+                    <h3>Bootstrap</h3>
+                    <div class="progress-bar-container">
+                        <div class="progress-line" data-progress="71%"></div>
+                    </div>
+                    <span class="progress-percentage">71%</span>
+                </div>
+
+                <div class="skill-card">
+                    <div class="skill-icon-wrapper">
+                        <i class="fa-solid fa-database skill-custom-icon" style="color: #336791;"></i>
+                    </div>
+                    <h3>PostgreSQL</h3>
+                    <div class="progress-bar-container">
+                        <div class="progress-line" data-progress="77%"></div>
+                    </div>
+                    <span class="progress-percentage">77%</span>
+                </div>
+
+                <div class="skill-card">
+                    <div class="skill-icon-wrapper">
+                        <i class="fa-solid fa-server skill-custom-icon" style="color: #003B57;"></i>
+                    </div>
+                    <h3>SQLite</h3>
+                    <div class="progress-bar-container">
+                        <div class="progress-line" data-progress="82%"></div>
+                    </div>
+                    <span class="progress-percentage">82%</span>
+                </div>
+
+                <div class="skill-card">
+                    <div class="skill-icon-wrapper">
+                        <i class="fa-brands fa-git-alt skill-custom-icon" style="color: #F05032;"></i>
+                    </div>
+                    <h3>Git</h3>
+                    <div class="progress-bar-container">
+                        <div class="progress-line" data-progress="88%"></div>
+                    </div>
+                    <span class="progress-percentage">88%</span>
+                </div>
+
+                <div class="skill-card">
+                    <div class="skill-icon-wrapper">
+                        <i class="fa-brands fa-github skill-custom-icon" style="color: #ffffff;"></i>
+                    </div>
+                    <h3>GitHub</h3>
+                    <div class="progress-bar-container">
+                        <div class="progress-line" data-progress="85%"></div>
+                    </div>
+                    <span class="progress-percentage">85%</span>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- The Project Section -->
+        <section id="projects" class="projects-section">
+            
+            <div class="projects-header reveal-on-scroll">
+                <h2 class="projects-heading">Featured <span class="highlight">Projects</span></h2>
+                <div class="heading-underline"></div>
+                <p class="projects-subtitle">
+                    A curated collection of full stack projects demonstrating my expertise in building modern, scalable web applications — from intuitive frontends to robust backend systems.
+                </p>
+            </div>
+
+            <!-- THE REVEAL ANCHOR: Smoothly fades your project grid into view -->
+            <div class="projects-grid reveal-on-scroll">
+                
+                <!-- CARD 1: BEAUTY GLOW -->
+                <div class="project-card">
+                    <div class="project-image-wrapper">
+                        <!-- Replace with your actual screenshot path later -->
+                        <img src="{% static 'images/beauty-glow.jpg' %}" alt="Beauty Glow Project" class="project-img">
+                    </div>
+                    <div class="project-info-stack">
+                        <h3>Beauty Glow</h3>
+                        <p class="project-description">
+                            A refined web application featuring modular routing, responsive UI elements, and full-stack integration built on a lightweight Python framework.
+                        </p>
+                        <div class="project-tags">
+                            <span class="tag-pill">Python</span>
+                            <span class="tag-pill">Flask</span>
+                            <span class="tag-pill">HTML5 / CSS3</span>
+                            <span class="tag-pill">SQLite</span>
+                            <span class="tag-pill">Git</span>
+                        </div>
+                        <a href="#" class="view-project-link">
+                            View Project <span class="link-arrow">&rarr;</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- CARD 2: NEXUS IDENTITY -->
+                <div class="project-card">
+                    <div class="project-image-wrapper">
+                        <!-- Replace with your actual screenshot path later -->
+                        <img src="{% static 'images/diop-identity.webp' %}" alt="DIOP Identity Project" class="project-img">
+                    </div>
+                    <div class="project-info-stack">
+                        <h3>DIOP Identity</h3>
+                        <p class="project-description">
+                            A secure, custom identity engine designed to resolve architectural authentication setups, integrating Google OAuth and PostgreSQL data layers.
+                        </p>
+                        <div class="project-tags">
+                            <span class="tag-pill">Python</span>
+                            <span class="tag-pill">Django</span>
+                            <span class="tag-pill">HTML5 / CSS3</span>
+                            <span class="tag-pill">PostgreSQL</span>
+                            <span class="tag-pill">OAuth 2.0</span>
+                            <span class="tag-pill">Git</span>
+                        </div>
+                        <a href="#" class="view-project-link">
+                            View Project <span class="link-arrow">&rarr;</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- CARD 3: OPEN MARKET P2P -->
+                <div class="project-card">
+                    <div class="project-image-wrapper">
+                        <img src="{% static 'images/marketplace.jpg' %}" alt="P2P Marketplace Project" class="project-img">
+                    </div>
+                    <div class="project-info-stack">
+                        <h3>DeanExchange</h3>
+                        <p class="project-description">
+                            A two-sided peer-to-peer marketplace featuring a unified identity engine that allows users to instantly switch between buyer and seller roles without account duplication.
+                        </p>
+                        <div class="project-tags">
+                            <span class="tag-pill">Python</span>
+                            <span class="tag-pill">Django</span>
+                            <span class="tag-pill">PostgreSQL</span>
+                            <span class="tag-pill">REST API</span>
+                            <span class="tag-pill">WebSockets</span>
+                            <span class="tag-pill">OAuth 2.0</span>
+                            <span class="tag-pill">Git</span>
+                        </div>
+                        <a href="#" class="view-project-link">
+                            View Project <span class="link-arrow">&rarr;</span>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- The Contact Section -->
+        <section id="contact" class="contact-section">
+            
+            <div class="contact-header reveal-on-scroll">
+                <h2 class="contact-heading">Get In <span class="highlight">Touch</span></h2>
+                <div class="heading-underline"></div>
+                <p class="contact-subtitle">
+                    Have a project in mind or just want to say hello? Drop me a message and let's create something amazing together.
+                </p>
+            </div>
+
+            <div class="contact-wrapper reveal-on-scroll">
+                
+                <div class="contact-form-container">
+                    <form method="POST" action="{% url 'contact' %}" class="django-contact-form" novalidate>
+                        {% csrf_token %}
+                        
+                        <div class="form-group-stack">
+                            <label for="{{ form.name.id_for_label }}">Name</label>
+                            {{ form.name }}
+                            {% if form.name.errors %}
+                                <span class="field-error-msg">{{ form.name.errors.0 }}</span>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group-stack">
+                            <label for="{{ form.email.id_for_label }}">Email</label>
+                            {{ form.email }}
+                            {% if form.email.errors %}
+                                <span class="field-error-msg">{{ form.email.errors.0 }}</span>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group-stack">
+                            <label for="{{ form.message.id_for_label }}">Message</label>
+                            {{ form.message }}
+                            {% if form.message.errors %}
+                                <span class="field-error-msg">{{ form.message.errors.0 }}</span>
+                            {% endif %}
+                        </div>
+
+                        <button type="submit" class="btn-submit-gradient">
+                            Send Message <span class="submit-icon">&nbsp;🚀</span>
+                        </button>
+                    </form>
+                </div>
+
+                <div class="contact-info-sidebar">
+                    <h3>Let's Connect</h3>
+                    <p class="sidebar-intro">
+                        I'm always excited to work on new projects and collaborate with amazing people. Whether you have a specific project in mind or just want to explore possibilities, I'd love to hear from you.
+                    </p>
+
+                    <div class="info-cards-stack">
+                        <div class="info-card-pill">
+                            <div class="info-icon-box email-color">
+                                <i class="fa-solid fa-envelope"></i>
+                            </div>
+                            <div class="info-text-box">
+                                <span class="info-label">Email</span>
+                                <span class="info-detail">igbedean@gmail.com</span>
+                            </div>
+                        </div>
+
+                        <div class="info-card-pill">
+                            <div class="info-icon-box phone-color">
+                                <i class="fa-solid fa-phone"></i>
+                            </div>
+                            <div class="info-text-box">
+                                <span class="info-label">Phone</span>
+                                <span class="info-detail">+234 812 070 7473</span>
+                            </div>
+                        </div>
+
+                        <div class="info-card-pill">
+                            <div class="info-icon-box location-color">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <div class="info-text-box">
+                                <span class="info-label">Location</span>
+                                <span class="info-detail">Port Harcourt, Nigeria</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- The Footer -->
+    <footer class="portfolio-footer">
+        <div class="footer-top-grid">
+            
+            <div class="footer-column brand-summary-box">
+                <p class="brand-text">
+                    Building modern, high-performance web experiences through elegant design, clean code, and the latest technologies.
+                </p>
+                <div class="footer-social-row">
+                    <a href="https://github.com/IgbeDean" target="_blank" class="footer-social-pill github-glow" aria-label="GitHub">
+                        <i class="fa-brands fa-github"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/igbedean47" target="_blank" class="footer-social-pill linkedin-glow" aria-label="LinkedIn">
+                        <i class="fa-brands fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="footer-column link-tree-box">
+                <h4 class="footer-column-title">Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column utility-contact-box">
+                <h4 class="footer-column-title">Get In Touch</h4>
+                
+                <div class="footer-contact-item">
+                    <span class="contact-label">Email:</span>
+                    <a href="mailto:igbedean@gmail.com" class="contact-value">igbedean@gmail.com</a>
+                </div>
+
+                <div class="footer-contact-item">
+                    <span class="contact-label">Location:</span>
+                    <span class="contact-value">Port Harcourt, Nigeria</span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="footer-divider-line"></div>
+
+        <div class="footer-bottom-strip">
+            <p class="copyright-notice">&copy; 2026 IgbeDean. All rights reserved.</p>
+            
+            <a href="#home" class="btn-back-to-top">
+                Back to Top <span class="arrow-icon">&nbsp;↑</span>
+            </a>
+        </div>
+    </footer>
+
+
+
+    <!-- Link to my JS file -->
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,185 @@
+/* --- ABOUT SECTION CONTAINER --- */
+.about-section {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 100px 8%;
+    background-color: #060509; /* Matches home section background precisely */
+    position: relative;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+/* Two-column structural grid wrapper */
+.about-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1200px;
+    gap: 80px;
+}
+
+/* --- LEFT SIDE: AVATAR WRAPPER AND GLOWS --- */
+.about-visual-column {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.circular-avatar-wrapper {
+    position: relative;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* The neon outline that wraps the hooded image */
+.about-avatar-img {
+    width: 90%;
+    height: 90%;
+    object-fit: cover;
+    border-radius: 50%;
+    z-index: 5;
+    border: 3px solid var(--neon-magenta); /* Premium crimson ring matching reference design */
+    box-shadow: 0 0 25px rgba(224, 0, 90, 0.4);
+}
+
+/* Dynamic Ambient pulsing glow behind avatar ring */
+.avatar-glow {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.cyan-pulse {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: 1px solid var(--neon-magenta);
+    filter: blur(4px);
+    opacity: 0.6;
+    animation: ringWave 4s infinite linear;
+    z-index: 2;
+}
+
+.purple-static {
+    width: 110%;
+    height: 110%;
+    background: var(--neon-pink); /* Replaced template violet with neon pink */
+    filter: blur(60px);
+    opacity: 0.12;
+    z-index: 1;
+}
+
+/* --- RIGHT SIDE: CONTENT BLOCKS --- */
+.about-content-column {
+    flex: 1.2;
+    text-align: left;
+}
+
+.about-title {
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: #ffffff;
+    letter-spacing: -0.5px;
+}
+
+/* Linear border accent bar sitting under heading title as seen in sample */
+.about-title::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--neon-magenta), var(--neon-pink));
+    margin-top: 8px;
+    border-radius: 2px;
+}
+
+.about-title .highlight {
+    background: linear-gradient(120deg, #ffffff, var(--neon-magenta));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.about-text-stack p {
+    color: var(--text-secondary); /* Subtitle dim tint */
+    font-size: 1rem;
+    line-height: 1.7;
+    margin-bottom: 20px;
+    font-weight: 300;
+}
+
+/* --- STATS PILLS GRID --- */
+.about-stats-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 35px;
+}
+
+.stat-pill {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--text-secondary);
+    padding: 10px 22px;
+    border-radius: 25px;
+    font-size: 0.88rem;
+    font-weight: 400;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+.stat-pill:hover {
+    border-color: var(--neon-magenta);
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(224, 0, 90, 0.25);
+}
+
+/* --- KEYFRAME ANIMATION FOR AVATAR RING --- */
+@keyframes ringWave {
+    0% {
+        transform: scale(0.96);
+        opacity: 0.3;
+    }
+    50% {
+        transform: scale(1.03);
+        opacity: 0.7;
+    }
+    100% {
+        transform: scale(0.96);
+        opacity: 0.3;
+    }
+}
+
+/* --- MOBILE TARGET TUNING --- */
+@media (max-width: 968px) {
+    .about-container {
+        flex-direction: column;
+        gap: 50px;
+        text-align: center;
+    }
+    .about-content-column {
+        text-align: center;
+    }
+    .about-title::after {
+        margin: 8px auto 0 auto;
+    }
+    .about-stats-group {
+        justify-content: center;
+    }
+    .circular-avatar-wrapper {
+        width: 260px;
+        height: 260px;
+    }
+}

@@ -1,0 +1,241 @@
+/* --- SKILLS SECTION CORE --- */
+.skills-section {
+    min-height: 100vh;
+    width: 100%;
+    background-color: #060509; /* Consistent background identity matching home/about */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 100px 8%;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.skills-heading {
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin-bottom: 60px;
+    color: #ffffff;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.8s ease, transform 0.8s ease;
+    transform: translateY(15px);
+}
+
+.skills-heading.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.skills-heading .highlight {
+    background: linear-gradient(120deg, #ffffff, var(--neon-magenta));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* --- THE CARD CONTAINER GRID --- */
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(220px, 1fr)); /* Exactly 4 columns across desktop windows */
+    gap: 25px;
+    width: 100%;
+    max-width: 1200px;
+}
+
+/* --- THE SKILL CARDS --- */
+.skill-card {
+    background: rgba(255, 255, 255, 0.02); /* Glassmorphic clear style matching home section modules */
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    backdrop-filter: blur(10px);
+}
+
+/* Card Hover Glow Matching Neon Design */
+.skill-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--neon-magenta);
+    box-shadow: 0 10px 30px rgba(224, 0, 90, 0.2);
+}
+
+/* Small square backing layout containing the company logos */
+.skill-icon-wrapper {
+    width: 55px;
+    height: 55px;
+    background: linear-gradient(135deg, rgba(224, 0, 90, 0.1), rgba(255, 42, 133, 0.1));
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 18px;
+    border: 1px solid rgba(224, 0, 90, 0.2);
+}
+
+.skill-logo {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+}
+
+.skill-card h3 {
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: #ffffff;
+    margin-bottom: 20px;
+    letter-spacing: 0.3px;
+}
+
+/* --- RE-CREATED NEON FLUID PROGRESS SLIDER --- */
+.progress-bar-container {
+    width: 100%;
+    height: 5px;
+    background-color: #171923;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.progress-line {
+    width: 0; /* Starts completely hidden at 0% width */
+    height: 100%;
+    background: linear-gradient(90deg, var(--neon-magenta) 0%, var(--neon-pink) 100%);
+    border-radius: 10px;
+    box-shadow: 0 0 10px var(--neon-magenta);
+    
+    /* Smooth timing configuration for the loading fill bar effect */
+    transition: width 1.5s cubic-bezier(0.1, 1, 0.1, 1); 
+}
+
+.progress-percentage {
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: var(--text-secondary);
+}
+
+/* --- MOBILE & TABLET ADAPTATIONS --- */
+@media (max-width: 1100px) {
+    .skills-grid {
+        grid-template-columns: repeat(3, minmax(200px, 1fr)); /* Drops to 3 items per row on narrow screens */
+    }
+}
+
+@media (max-width: 768px) {
+    .skills-grid {
+        grid-template-columns: repeat(2, minmax(160px, 1fr)); /* Drops to 2 items per row on mobile devices */
+        gap: 15px;
+    }
+    .skills-heading {
+        font-size: 2.2rem;
+        margin-bottom: 40px;
+    }
+}
+
+.skill-custom-icon {
+    font-size: 1.8rem;
+    transition: transform 0.3s ease;
+}
+.skill-card:hover .skill-custom-icon {
+    transform: scale(1.15);
+}
+.django-text-icon {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #092e20;
+    background: #44b78b;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-family: serif;
+    letter-spacing: -1px;
+}
+
+/* --- DUAL ICON COMPOSITION ARCHITECTURE --- */
+
+/* Turn the square wrapper into a relative anchor for layering */
+.skill-icon-wrapper.dual-icons {
+    position: relative;
+    width: 65px; /* Slightly wider to accommodate both vector shapes nicely */
+    background: transparent; /* Let the cards handle the base background depth */
+    border: none;
+}
+
+/* Base structural rules for the twin vector graphics */
+.skill-icon-wrapper.dual-icons .skill-custom-icon {
+    font-size: 1.7rem;
+    position: absolute;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Position the HTML5 shield slightly forward on the left */
+.skill-icon-wrapper.dual-icons .html-icon {
+    color: #E34F26; /* Official HTML5 Orange */
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    filter: drop-shadow(0 2px 8px rgba(227, 79, 38, 0.25));
+}
+
+/* Position the CSS3 shield slightly lower and offset to the right */
+.skill-icon-wrapper.dual-icons .css-icon {
+    color: var(--neon-pink); /* Swapped old cyan for your signature neon pink theme accent */
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%) scale(0.85); /* Slightly smaller so HTML stands out as primary anchor */
+    z-index: 1;
+    opacity: 0.7; /* Softly dimmed in the background layout state */
+}
+
+/* --- THE HOVER INTERACTION OVERLAP --- */
+.skill-card:hover .html-icon {
+    transform: translateY(-50%) scale(1.05) translateX(-3px);
+    filter: drop-shadow(0 4px 12px rgba(227, 79, 38, 0.45));
+}
+
+.skill-card:hover .css-icon {
+    transform: translateY(-50%) scale(0.95) translateX(3px);
+    opacity: 1; /* Glows up to full power on focus */
+    filter: drop-shadow(0 4px 12px rgba(255, 42, 133, 0.45)); /* Updated neon shadow to hot pink */
+}
+
+/* ==========================================================================
+   SKILLS GRID STAGGERED REVEAL SYSTEM
+   ========================================================================== */
+@keyframes skillCardFadeInUp {
+    from {
+        opacity: 0;
+        transform: translate3d(0, 30px, 0);
+    }
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+/* Hide the individual cards inside the grid by default */
+.skills-grid .skill-card {
+    opacity: 0;
+}
+
+/* When the grid container intersects the scroll boundary, trigger the child elements */
+.skills-grid.is-visible .skill-card {
+    animation: skillCardFadeInUp 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+/* Micro-stagger delay scheduling using CSS nth-child structures */
+.skills-grid.is-visible .skill-card:nth-child(1)  { animation-delay: 0.05s; }
+.skills-grid.is-visible .skill-card:nth-child(2)  { animation-delay: 0.12s; }
+.skills-grid.is-visible .skill-card:nth-child(3)  { animation-delay: 0.19s; }
+.skills-grid.is-visible .skill-card:nth-child(4)  { animation-delay: 0.26s; }
+.skills-grid.is-visible .skill-card:nth-child(5)  { animation-delay: 0.33s; }
+.skills-grid.is-visible .skill-card:nth-child(6)  { animation-delay: 0.40s; }
+.skills-grid.is-visible .skill-card:nth-child(7)  { animation-delay: 0.47s; }
+.skills-grid.is-visible .skill-card:nth-child(8)  { animation-delay: 0.54s; }
+.skills-grid.is-visible .skill-card:nth-child(9)  { animation-delay: 0.61s; }
+.skills-grid.is-visible .skill-card:nth-child(10) { animation-delay: 0.68s; }

@@ -1,0 +1,232 @@
+/* ==========================================================================
+   PROJECTS SECTION ARCHITECTURE
+   ========================================================================== */
+.projects-section {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 100px 8%;
+    background-color: #060509; /* Matches theme perfectly */
+    position: relative;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+/* --- PROJECTS HEADER STACK --- */
+.projects-header {
+    text-align: center;
+    max-width: 700px;
+    margin-bottom: 60px;
+}
+
+.projects-heading {
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin-bottom: 12px;
+    color: #ffffff;
+}
+
+.heading-underline {
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--neon-magenta), var(--neon-pink));
+    margin: 0 auto 24px auto;
+    border-radius: 2px;
+}
+
+.projects-subtitle {
+    font-size: 1.05rem;
+    font-weight: 300;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+/* --- THE GRID & CARDS LAYOUT --- */
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(280px, 400px));
+    gap: 30px;
+    justify-content: center;
+    width: 100%;
+    max-width: 1240px;
+}
+
+.project-card {
+    background: rgba(255, 255, 255, 0.02); /* Glassmorphic card style matching home framework */
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.project-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--neon-magenta); /* Lights up with signature crimson border on hover */
+    box-shadow: 0 20px 40px rgba(224, 0, 90, 0.15);
+}
+
+/* --- IMAGE COMPONENT WRAPPER --- */
+.project-image-wrapper {
+    width: 100%;
+    height: 220px;
+    background-color: #12131a; /* Placeholder card background */
+    overflow: hidden;
+    position: relative;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.project-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.project-card:hover .project-img {
+    transform: scale(1.04); /* Ultra-smooth imagery zoom */
+}
+
+/* --- TEXT & INFO CONTENT COMPONENT --- */
+.project-info-stack {
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.project-info-stack h3 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #ffffff;
+}
+
+.project-description {
+    font-size: 0.95rem;
+    font-weight: 300;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 24px;
+    min-height: 68px; /* Keeps text cards uniform height */
+}
+
+/* --- TECHNOLOGICAL PILL TAGS --- */
+.project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 28px;
+    margin-top: auto; /* Pushes links flush to bottom */
+}
+
+.tag-pill {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 400;
+    color: #b4b9c6;
+}
+
+/* --- THE VIEW LINK CTA --- */
+.view-project-link {
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    display: inline-flex;
+    align-items: center;
+    transition: color 0.3s ease;
+    align-self: flex-start;
+}
+
+.link-arrow {
+    margin-left: 6px;
+    transition: transform 0.3s ease;
+}
+
+.project-card:hover .view-project-link {
+    color: var(--neon-magenta);
+}
+
+.project-card:hover .link-arrow {
+    transform: translateX(4px); /* Interactive arrow shift */
+}
+
+/* --- MOBILE TARGET CONTROLS --- */
+@media (max-width: 768px) {
+    .projects-heading {
+        font-size: 2.2rem;
+    }
+    .projects-grid {
+        grid-template-columns: 1fr;
+        max-width: 420px;
+        gap: 30px;
+    }
+    .projects-section {
+        padding: 80px 6%;
+    }
+}
+
+/* ==========================================================================
+   PROJECT CARDS ALTERNATING STAGGER SYSTEM
+   ========================================================================== */
+@keyframes projectCardEntrance {
+    from {
+        opacity: 0;
+        /* Hardware accelerated translate3d combination */
+        transform: translate3d(var(--slide-x, 0), 40px, 0);
+    }
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+/* 1. Hide project cards by default */
+.projects-grid .project-card {
+    opacity: 0;
+    will-change: transform, opacity;
+}
+
+/* 2. Set structural directional properties using CSS variables */
+.projects-grid .project-card:nth-child(odd) {
+    --slide-x: -30px; /* Odd cards slide slightly from the left */
+}
+
+.projects-grid .project-card:nth-child(even) {
+    --slide-x: 30px;  /* Even cards slide slightly from the right */
+}
+
+/* 3. Execute animations in a wave cascade once triggered by the scroll engine */
+.projects-grid.is-visible .project-card {
+    animation: projectCardEntrance 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Stagger scheduling for cards */
+.projects-grid.is-visible .project-card:nth-child(1) { animation-delay: 0.10s; }
+.projects-grid.is-visible .project-card:nth-child(2) { animation-delay: 0.25s; }
+.projects-grid.is-visible .project-card:nth-child(3) { animation-delay: 0.40s; }
+
+
+/* ==========================================
+   PROJECT HEADER COHESION (Optional)
+   ========================================== */
+.projects-header {
+    opacity: 0;
+    transform: translate3d(0, 20px, 0);
+    transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1),
+                transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.projects-header.is-visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+}

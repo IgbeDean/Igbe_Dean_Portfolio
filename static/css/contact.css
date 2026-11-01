@@ -1,0 +1,227 @@
+/* ==========================================================================
+   CONTACT SECTION ARCHITECTURE
+   ========================================================================== */
+.contact-section {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 100px 8%;
+    background-color: #060509; /* Matches theme perfectly */
+    position: relative;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.contact-header {
+    text-align: center;
+    max-width: 700px;
+    margin-bottom: 50px;
+}
+
+.contact-heading {
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #ffffff;
+}
+
+.contact-heading .highlight {
+    background: linear-gradient(120deg, #ffffff, var(--neon-magenta));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.contact-subtitle {
+    font-size: 1.05rem;
+    font-weight: 300;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+/* --- DETAILED 2-COLUMN WRAPPER LAYER --- */
+.contact-wrapper {
+    display: flex;
+    gap: 60px;
+    width: 100%;
+    max-width: 1100px;
+    justify-content: center;
+}
+
+/* --- LEFT COLUMN: DJANGO FORMS STYLING ARCHITECTURE --- */
+.contact-form-container {
+    flex: 1.2;
+    width: 100%;
+}
+
+.django-contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.form-group-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group-stack label {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #ffffff;
+    letter-spacing: 0.3px;
+}
+
+/* Targeting Django Form Widgets (Inputs and Textareas) explicitly */
+.django-contact-form input[type="text"],
+.django-contact-form input[type="email"],
+.django-contact-form textarea {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.02); /* Translucent glass matching home widgets */
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 16px 20px;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    color: #ffffff;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.django-contact-form textarea {
+    min-height: 160px;
+    resize: none;
+}
+
+/* Interactive focus glow ring matching neon aesthetics */
+.django-contact-form input:focus,
+.django-contact-form textarea:focus {
+    outline: none;
+    border-color: var(--neon-magenta);
+    box-shadow: 0 0 15px rgba(224, 0, 90, 0.25);
+}
+
+.field-error-msg {
+    font-size: 0.8rem;
+    color: #ff5252;
+    margin-top: 4px;
+}
+
+/* --- SUBMIT BUTTON DESIGN --- */
+.btn-submit-gradient {
+    width: 100%;
+    background: linear-gradient(90deg, var(--neon-magenta), var(--neon-pink));
+    border: none;
+    padding: 16px;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #ffffff;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-top: 10px;
+    box-shadow: 0 0 15px rgba(224, 0, 90, 0.15);
+}
+
+.btn-submit-gradient:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(224, 0, 90, 0.4);
+}
+
+/* --- RIGHT COLUMN: INFO SIDEBAR LAYOUT --- */
+.contact-info-sidebar {
+    flex: 0.9;
+    display: flex;
+    flex-direction: column;
+}
+
+.contact-info-sidebar h3 {
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: #ffffff;
+}
+
+.sidebar-intro {
+    font-size: 0.95rem;
+    font-weight: 300;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.info-cards-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.info-card-pill {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    padding: 16px 20px;
+    border-radius: 12px;
+    gap: 18px;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.info-card-pill:hover {
+    transform: translateX(4px);
+    border-color: rgba(224, 0, 90, 0.25);
+}
+
+.info-icon-box {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+}
+
+/* Color schemes matching the neon theme perfectly */
+.email-color { background: rgba(224, 0, 90, 0.1); color: var(--neon-magenta); }
+.phone-color { background: rgba(0, 212, 255, 0.1); color: #00d4ff; } /* Kept cyan accent option for dual-contrast balance */
+.location-color { background: rgba(255, 42, 133, 0.1); color: var(--neon-pink); }
+
+.info-text-box {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.info-label {
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.info-detail {
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: #ffffff;
+}
+
+/* --- RESPONSIVE SCREEN ADJUSTMENTS --- */
+@media (max-width: 900px) {
+    .contact-wrapper {
+        flex-direction: column-reverse; /* Puts info on top or bottom cleanly */
+        gap: 50px;
+    }
+    .contact-section {
+        padding: 80px 6%;
+    }
+}
