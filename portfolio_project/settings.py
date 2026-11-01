@@ -29,7 +29,11 @@ SECRET_KEY = config('SECRET_KEY', default='django-insecure-render-build-key-1234
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
+# BEFORE (causes crash when ALLOWED_HOSTS isn't in .env on Render):
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
+
+# AFTER (safe fallback for production & local development):
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='.onrender.com,localhost,127.0.0.1', cast=Csv())
 
 
 # Application definition
