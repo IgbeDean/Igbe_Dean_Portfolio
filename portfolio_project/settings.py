@@ -23,11 +23,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Pull secrets safely from the .env file
 # SECURITY WARNING: keep the secret key used in production secret!
-# AFTER (prevents crash):
 SECRET_KEY = config('SECRET_KEY', default='django-insecure-render-build-key-12345')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=False, cast=bool)
+DEBUG = config('DEBUG', default=True, cast=bool)
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='.onrender.com,localhost,127.0.0.1', cast=Csv())
 
@@ -139,10 +138,10 @@ EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 
 # Your authentic identity layers
-EMAIL_HOST_USER = 'igbedean@gmail.com'
+EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='igbedean@gmail.com')
 
 # SECURITY WARNING: Never hardcode passwords. Use a Django App Password here.
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
 
 # The default "From" header that users see when an email arrives
 DEFAULT_FROM_EMAIL = 'Portfolio Engine <igbedean@gmail.com>'
